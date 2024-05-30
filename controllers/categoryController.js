@@ -73,16 +73,36 @@ exports.category_update_post = [
         errors: errors.array(),
       });
     } else {
-      const updatedCategory = await Category.findByIdAndUpdate(req.params.id, category, {});
+      const updatedCategory = await Category.findByIdAndUpdate(
+        req.params.id,
+        category,
+        {}
+      );
       res.redirect(updatedCategory.url);
     }
   }),
 ];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Catgory delete');
+  const [category, items] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }).exec(),
+  ]);
+  if (category === null) {
+    res.redirect('/inventory/categories');
+  }
+  res.render('category_delete', { category, items });
 });
 
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  res.send('TODO: POST Catgory delete');
+  const [category, items] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }),
+  ]);
+  if (items.length) {
+    res.render('category_delete', { category, items });
+  } else {
+    await Category.findByIdAndDelete(req.body.category_id);
+    res.redirect('/inventory/categories');
+  }
 });
