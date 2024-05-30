@@ -1,0 +1,9 @@
+extends layout 
+
+block content 
+    h1= item.name 
+    p= item.description 
+    p Price(each): $&nbsp;#{item.price}
+    p Stock: &nbsp;#{item.number_in_stock} units
+    p Category: 
+        a(href=item.category.url) #{item.category.name} 
