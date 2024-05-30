@@ -1,0 +1,31 @@
+extends layout 
+
+block content 
+    h1= title 
+    form( style="display: flex; flex-direction: column" method="POST")
+        label Name:
+            input(type="text" name="name" value=(item === undefined ? "" : item.name) required)
+        label Description:
+            textarea(name="description" value=(item === undefined ? "" : item.description) required)
+        label Price($) per unit:
+            input(type="number" name="price" value=(item === undefined ? "" : item.price) required)
+        label Stock:
+            input(type="number" name="number_in_stock" value=(item === undefined ? "" : item.number_in_stock) required)
+        label Category:
+            select(name="category" required) 
+                option(value="") --Please select a category--
+                each category in categories 
+                    if item 
+                        if category._id.toString() === item.category._id.toString() 
+                            option(value=category._id selected) #{category.name}
+                        else 
+                            option(value=category._id) #{category.name} 
+                    else 
+                        option(value=category._id) #{category.name}
+        div 
+            button(type="submit") Create
+        
+    if errors 
+        ul 
+            each error in errors 
+                li error.message
