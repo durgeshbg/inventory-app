@@ -111,9 +111,14 @@ exports.item_update_post = [
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Item Delete');
+  const item = await Item.findById(req.params.id).populate('category').exec();
+  if (item === null) {
+    res.redirect('/inventory/items');
+  }
+  res.render('item_delete', { item });
 });
 
 exports.item_delete_post = asyncHandler(async (req, res, next) => {
-  res.send('TODO: POST Item Delete');
+  await Item.findByIdAndDelete(req.body.item_id);
+  res.redirect('/inventory/items');
 });
