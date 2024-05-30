@@ -31,11 +31,8 @@ exports.item_create_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_create_post = [
-  body('name', 'Name should be specified').trim().isLength({ min: 1 }).escape(),
-  body('description', 'Description should be specified')
-    .trim()
-    .isLength({ min: 1 })
-    .escape(),
+  body('name', 'Name too small').trim().isLength({ min: 2 }).escape(),
+  body('description', 'Description too small').trim().isLength({ min: 10 }).escape(),
   body('price', 'Invalid price').trim().toInt().isLength({ min: 1 }).escape(),
   body('number_in_stock', 'Invalid stock number')
     .trim()
