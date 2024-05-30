@@ -11,7 +11,8 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_list = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Item List');
+  const items = await Item.find({}).populate('category').exec();
+  res.render('item_list', { title: 'Items List', items });
 });
 exports.item_detail = asyncHandler(async (req, res, next) => {
   res.send('TODO: GET Item Detail');
