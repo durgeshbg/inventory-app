@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+    h1 Delete #{category.name}
+    p= category.description 
+
+    if items.length 
+        p You need to first delete the items in this category?
+        ul 
+            each item in items 
+                li 
+                    a(href=item.url)= item.name 
+    else  
+        p Do you really want to delete this category?
+        form(method="POST")
+            input(type="hidden", name="category_id", value=category._id)
+            button(type="submit") Delete
+    
