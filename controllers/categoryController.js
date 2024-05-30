@@ -4,7 +4,8 @@ const asyncHandler = require('express-async-handler');
 const debug = require('debug')('item:');
 
 exports.category_list = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Category list');
+  const categories = await Category.find({}).exec();
+  res.render('category_list', { title: 'Categories List', categories });
 });
 exports.category_detail = asyncHandler(async (req, res, next) => {
   res.send('TODO: GET Catgory detail');
