@@ -4,12 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
+const compression = require('compression');
+const helmet = require('helmet');
 
 var indexRouter = require('./routes/index');
 var inventoryRouter = require('./routes/inventory');
 
 var app = express();
 
+// Mongoose connection
 require('dotenv').config();
 main = async function () {
   mongoose.connect(process.env.MONGO_URI);
@@ -20,6 +23,9 @@ main().catch((err) => console.log(err));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// Middleware
+app.use(compression());
+app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
