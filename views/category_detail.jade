@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+    h1= category.name 
+    p= category.description 
+
+    h2 Items available
+    ul 
+        each item in items 
+            li 
+                a(href=item.url) #{item.name}
+                | [Stock: #{item.number_in_stock}]
