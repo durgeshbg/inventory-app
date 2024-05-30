@@ -6,7 +6,8 @@ block content
         label Name: 
             input(type="text" name="name" value=(category === undefined ? "" : category.name) required)
         label Description: 
-            input(type="text" name="description" value=(category === undefined ? "" : category.description) required)
+            textarea(name="description" required)
+                | #{category === undefined ? "" : category.description}
         div 
             button(type="submit") Create 
 

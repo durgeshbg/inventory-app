@@ -6,7 +6,8 @@ block content
         label Name:
             input(type="text" name="name" value=(item === undefined ? "" : item.name) required)
         label Description:
-            textarea(name="description" value=(item === undefined ? "" : item.description) required)
+            textarea(name="description" required)
+                | #{item === undefined ? "" : item.description}
         label Price($) per unit:
             input(type="number" name="price" value=(item === undefined ? "" : item.price) required)
         label Stock:
