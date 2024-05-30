@@ -15,7 +15,13 @@ exports.item_list = asyncHandler(async (req, res, next) => {
   res.render('item_list', { title: 'Items List', items });
 });
 exports.item_detail = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Item Detail');
+  const item = await Item.findById(req.params.id).populate('category').exec();
+  if (item === null) {
+    const err = new Error('Item not found!');
+    err.status = 404;
+    next(err);
+  }
+  res.render('item_detail', { title: 'Item Detail', item });
 });
 exports.item_create_get = asyncHandler(async (req, res, next) => {
   res.send('TODO: GET Item Create');
