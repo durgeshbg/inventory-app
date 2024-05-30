@@ -2,17 +2,17 @@ extends layout
 
 block content 
     h1= title 
-    form( style="display: flex; flex-direction: column" method="POST")
-        label Name:
+    form(method="POST")
+        label.strong Name:
             input(type="text" name="name" value=(item === undefined ? "" : item.name) required)
-        label Description:
+        label.strong Description:
             textarea(name="description" required)
                 | #{item === undefined ? "" : item.description}
-        label Price($) per unit:
+        label.strong Price($) per unit:
             input(type="number" name="price" value=(item === undefined ? "" : item.price) required)
-        label Stock:
+        label.strong Stock:
             input(type="number" name="number_in_stock" value=(item === undefined ? "" : item.number_in_stock) required)
-        label Category:
+        label.strong Category:
             select(name="category" required) 
                 option(value="") --Please select a category--
                 each category in categories 
@@ -24,7 +24,7 @@ block content
                     else 
                         option(value=category._id) #{category.name}
         div 
-            button(type="submit") Create
+            button(class=(title.split(" ")[0].toLowerCase()) type="submit")= title.split(" ")[0].toUpperCase()
         
     if errors 
         ul 

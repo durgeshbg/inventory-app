@@ -3,12 +3,13 @@ extends layout
 block content 
     h1 Delete: #{item.name}
     p= item.description
-    p Price($) per unit: #{item.price}
-    p Stock: #{item.stock}
-    p Category: 
+    p #[strong Price($) per unit:] #{item.price}
+    p #[strong Stock:] #{item.number_in_stock}
+    p #[strong Category:] 
         a(href=item.category.url)= item.category.name 
 
-    p Do you really want to delete this item?
+    p.strong Do you really want to delete this item?
     form(method="POST")
         input(type="hidden", name="item_id", value=item._id)
-        button(type="submit") Delete
+        div 
+            button.delete(type="submit") DELETE

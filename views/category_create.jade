@@ -2,14 +2,14 @@ extends layout
 
 block content 
     h1= title 
-    form(style="display: flex; flex-direction: column" method="post") 
-        label Name: 
+    form(method="post") 
+        label.strong Name: 
             input(type="text" name="name" value=(category === undefined ? "" : category.name) required)
-        label Description: 
+        label.strong Description: 
             textarea(name="description" required)
                 | #{category === undefined ? "" : category.description}
         div 
-            button(type="submit") Create 
+            button.strong(class=(title.split(" ")[0].toLowerCase()) type="submit")= title.split(" ")[0].toUpperCase() 
 
 
     if errors 
