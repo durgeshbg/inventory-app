@@ -1,10 +1,13 @@
 const Item = require('../models/item');
+const Category = require('../models/category');
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const debug = require('debug')('item:');
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Index');
+  const categories = await Category.find({}).exec();
+  const items = await Item.find({}).exec();
+  res.render('index', { title: 'Home', items, categories });
 });
 
 exports.item_list = asyncHandler(async (req, res, next) => {
