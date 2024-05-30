@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  p Select the items you are looking for.
+  ul 
+    each item in items 
+      li 
+        a(href=item.url) #{item.name} - #{item.category.name}
