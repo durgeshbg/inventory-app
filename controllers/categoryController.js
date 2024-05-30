@@ -21,20 +21,43 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.category_create_get = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Catgory create');
+  res.render('category_create', { title: 'Create Category' });
 });
-exports.category_create_post = asyncHandler(async (req, res, next) => {
-  res.send('TODO: POST Catgory create');
-});
+
+exports.category_create_post = [
+  body('name', 'Name too small').trim().isLength({ min: 2 }).escape(),
+  body('description', 'Description too small').trim().isLength({ min: 10 }).escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+    });
+    if (!errors.isEmpty()) {
+      res.render('category_create', {
+        title: 'Create Category',
+        category,
+        errors: errors.array(),
+      });
+    } else {
+      await category.save();
+      res.redirect(category.url);
+    }
+  }),
+];
+
 exports.category_update_get = asyncHandler(async (req, res, next) => {
   res.send('TODO: GET Catgory update');
 });
+
 exports.category_update_post = asyncHandler(async (req, res, next) => {
   res.send('TODO: POST Catgory update');
 });
+
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
   res.send('TODO: GET Catgory delete');
 });
+
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
   res.send('TODO: POST Catgory delete');
 });
