@@ -49,7 +49,8 @@ exports.item_create_post = [
       number_in_stock: req.body.number_in_stock,
     });
     if (!errors.isEmpty()) {
-      res.render('item_form', {
+      const categories = await Category.find({}).exec();
+      res.render('item_create', {
         title: 'Create Item',
         item,
         categories,
@@ -63,12 +64,51 @@ exports.item_create_post = [
 ];
 
 exports.item_update_get = asyncHandler(async (req, res, next) => {
-  res.send('TODO: GET Item Update');
+  const [item, categories] = await Promise.all([
+    Item.findById(req.params.id).populate('category').exec(),
+    Category.find({}).exec(),
+  ]);
+  if (item === null) {
+    const err = new Error('Item not found!');
+    err.status = 404;
+    next(err);
+  }
+  res.render('item_create', { title: 'Update Item', item, categories });
 });
 
-exports.item_update_post = asyncHandler(async (req, res, next) => {
-  res.send('TODO: POST Item Update');
-});
+exports.item_update_post = [
+  body('name', 'Name too small').trim().isLength({ min: 2 }).escape(),
+  body('description', 'Description too small').trim().isLength({ min: 10 }).escape(),
+  body('price', 'Invalid price').trim().toInt().isLength({ min: 1 }).escape(),
+  body('number_in_stock', 'Invalid stock number')
+    .trim()
+    .toInt()
+    .isLength({ min: 1 })
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const item = new Item({
+      category: req.body.category,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      number_in_stock: req.body.number_in_stock,
+      _id: req.params.id,
+    });
+    if (!errors.isEmpty()) {
+      const categories = await Category.find({}).exec();
+      res.render('item_create', {
+        title: 'Update Item',
+        item,
+        categories,
+        errors: errors.array(),
+      });
+    } else {
+      const updatedItem = await Item.findByIdAndUpdate(req.params.id, item, {});
+      res.redirect(updatedItem.url);
+    }
+  }),
+];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
   res.send('TODO: GET Item Delete');
