@@ -2,4 +2,12 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  h3 Welcome to the Thift Shop 
+  p We sell the top notch qaulity car parts from A-Zzzz whatever it may be, we get it for you.
+  ul 
+    li 
+      a(href="categories") Categories(#{categories.length})
+      | Select the category of your part.
+    li 
+      a(href="items") Items(#{items.length})
+      | Or just select the part you are looking for.
