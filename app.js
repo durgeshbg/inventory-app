@@ -6,11 +6,19 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const compression = require('compression');
 const helmet = require('helmet');
+const ratelimter = require('express-rate-limit');
 
 var indexRouter = require('./routes/index');
 var inventoryRouter = require('./routes/inventory');
 
 var app = express();
+
+app.use(
+  ratelimter({
+    windowMs: 1 * 60 * 1000,
+    max: 20,
+  })
+);
 
 // Mongoose connection
 require('dotenv').config();
